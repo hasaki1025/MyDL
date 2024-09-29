@@ -133,11 +133,35 @@ class TranslateDataset(Dataset):
         return self.src_data[item], self.tar_data[item]
 
 
+# class ProcessBatch:
+#     def __init__(self, nums_step, src_vocab, tar_vocab):
+#         self.nums_step = nums_step
+#         self.src_vocab = src_vocab
+#         self.tar_vocab = tar_vocab
+#
+#     def truncate_and_pad_sentence(self, sentence, vocab: Vocab):
+#         sentence = sentence[:self.nums_step - 1] + [vocab.end_token]
+#         padding_len = self.nums_step - len(sentence)
+#         return sentence + [vocab.pad_token] * padding_len, self.nums_step - padding_len
+#
+#     def __call__(self, batch):
+#         batch = [
+#             (self.truncate_and_pad_sentence(src, self.src_vocab), self.truncate_and_pad_sentence(tar, self.tar_vocab))
+#             for src, tar in batch]  # [(src_sent, valid_len),()]
+#         src_data = [item[0][0] for item in batch]
+#         src_val_len = [item[0][1] for item in batch]
+#         tar_data = [item[1][0] for item in batch]
+#         tar_val_len = [item[1][1] for item in batch]
+#         src_data, tar_data = [self.src_vocab[sent] for sent in src_data], [self.tar_vocab[sent] for sent in tar_data]
+#         return (torch.tensor(src_data),
+#                 torch.tensor(src_val_len),
+#                 torch.tensor(tar_data),
+#                 torch.tensor(tar_val_len))
+
 class ProcessBatch:
-    def __init__(self, nums_step, src_vocab, tar_vocab):
+    def __init__(self, nums_step, vocab):
         self.nums_step = nums_step
-        self.src_vocab = src_vocab
-        self.tar_vocab = tar_vocab
+        self.vocab = vocab
 
     def truncate_and_pad_sentence(self, sentence, vocab: Vocab):
         sentence = sentence[:self.nums_step - 1] + [vocab.end_token]
@@ -146,17 +170,18 @@ class ProcessBatch:
 
     def __call__(self, batch):
         batch = [
-            (self.truncate_and_pad_sentence(src, self.src_vocab), self.truncate_and_pad_sentence(tar, self.tar_vocab))
+            (self.truncate_and_pad_sentence(src, self.vocab), self.truncate_and_pad_sentence(tar, self.vocab))
             for src, tar in batch]  # [(src_sent, valid_len),()]
         src_data = [item[0][0] for item in batch]
         src_val_len = [item[0][1] for item in batch]
         tar_data = [item[1][0] for item in batch]
         tar_val_len = [item[1][1] for item in batch]
-        src_data, tar_data = [self.src_vocab[sent] for sent in src_data], [self.tar_vocab[sent] for sent in tar_data]
+        src_data, tar_data = [self.vocab[sent] for sent in src_data], [self.vocab[sent] for sent in tar_data]
         return (torch.tensor(src_data),
                 torch.tensor(src_val_len),
                 torch.tensor(tar_data),
                 torch.tensor(tar_val_len))
+
 
 
 def split_data(data, train_ratio=0.8, val_ratio=0.1):
@@ -179,6 +204,27 @@ def load_data_from_file(data_type,data_dir):
         tar_data = f.readlines()
     return src_data, tar_data
 
+# def load_Multi30K_data(data_dir, nums_step, batch_size):
+#     # src_data, tar_data = preprocess(read_data('de', data_dir), read_data('en', data_dir))
+#     train_src, train_tar = preprocess(*load_data_from_file('train', data_dir))
+#     val_src, val_tar = preprocess(*load_data_from_file('val', data_dir))
+#     test_src, test_tar = preprocess(*load_data_from_file('test', data_dir))
+#
+#
+#     src_vocab, tar_vocab = Vocab(train_src + val_src + test_src), Vocab(train_tar + val_tar + test_tar)
+#     train_data_set, val_data_set, test_data_set = (
+#         TranslateDataset(train_src, train_tar),
+#         TranslateDataset(val_src, val_tar),
+#         TranslateDataset(test_src, test_tar))
+#
+#
+#     processor = ProcessBatch(nums_step, src_vocab, tar_vocab)
+#     return (DataLoader(train_data_set, batch_size=batch_size, shuffle=True, collate_fn=processor),
+#             DataLoader(val_data_set, batch_size=batch_size, shuffle=True, collate_fn=processor),
+#             DataLoader(test_data_set, batch_size=batch_size, shuffle=True, collate_fn=processor), src_vocab, tar_vocab)
+
+
+
 def load_Multi30K_data(data_dir, nums_step, batch_size):
     # src_data, tar_data = preprocess(read_data('de', data_dir), read_data('en', data_dir))
     train_src, train_tar = preprocess(*load_data_from_file('train', data_dir))
@@ -186,17 +232,17 @@ def load_Multi30K_data(data_dir, nums_step, batch_size):
     test_src, test_tar = preprocess(*load_data_from_file('test', data_dir))
 
 
-    src_vocab, tar_vocab = Vocab(train_src + val_src + test_src), Vocab(train_tar + val_tar + test_tar)
+    vocab = Vocab(train_src + val_src + test_src + train_tar + val_tar + test_tar)
     train_data_set, val_data_set, test_data_set = (
         TranslateDataset(train_src, train_tar),
         TranslateDataset(val_src, val_tar),
         TranslateDataset(test_src, test_tar))
 
 
-    processor = ProcessBatch(nums_step, src_vocab, tar_vocab)
+    processor = ProcessBatch(nums_step, vocab)
     return (DataLoader(train_data_set, batch_size=batch_size, shuffle=True, collate_fn=processor),
             DataLoader(val_data_set, batch_size=batch_size, shuffle=True, collate_fn=processor),
-            DataLoader(test_data_set, batch_size=batch_size, shuffle=True, collate_fn=processor), src_vocab, tar_vocab)
+            DataLoader(test_data_set, batch_size=batch_size, shuffle=True, collate_fn=processor), vocab)
 
 
 def get_seq_arg_len():
