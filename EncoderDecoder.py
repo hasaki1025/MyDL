@@ -108,25 +108,25 @@ class EarlyStopping:
         self.early_stop = False
         self.save_file = save_file
 
-    def __call__(self, val_loss,model):
+    def __call__(self, score,model):
 
         if self.best_score is None:
-            self.best_score = val_loss
-            self.save_checkpoint(model,val_loss)
+            self.best_score = score
+            self.save_checkpoint(model, score)
 
-        if val_loss + self.delta > self.best_score:
+        if score < self.best_score + self.delta:
             self.counter += 1
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
-            self.best_score = val_loss
+            self.best_score = score
             self.counter = 0
-            self.save_checkpoint(model,val_loss)
+            self.save_checkpoint(model, score)
 
         return self.early_stop
 
     def save_checkpoint(self, model,loss):
-        logger.info("Get better model ,loss {}, save model to {}".format(loss,self.save_file))
+        logger.info("Get better model ,score {}, save model to {}".format(loss,self.save_file))
         torch.save(model.state_dict(), self.save_file)
 
 
@@ -139,10 +139,10 @@ def calculate_bleu(pred,target,valid_len,vocab:Vocab):
     :param vocab: target vocab
     :return: float score
     """
-    batch_size = pred.size(0)
+    batch_size = pred.shape[0]
     pred_sentences = vocab.tensor2sent(pred)
     target_sentences = vocab.tensor2sent(target,valid_lens=valid_len)
-    return sum([ sentence_bleu([target_sentences[i]], pred_sentences[i],weights=[1,0,0,0]) for i in range(batch_size)]) / batch_size
+    return sum([sentence_bleu([target_sentences[i]], pred_sentences[i],weights=[1,0,0,0]) for i in range(batch_size)]) / batch_size
 
 def cal_bleu(pred,target):
     """
@@ -166,15 +166,16 @@ def generate_train_decoder_inputs(target,begin_index):
 
 def calculate_acc(pred:torch.Tensor, target,valid_lens):
     """
-    :param pred: shape (batch_size, seq_len, vocab_size)
+    :param pred: shape (batch_size, seq_len, vocab_size) or shape (batch_size, seq_len)
     :param target: shape (batch_size, seq_len)
     :return: float
     """
-    pred = nn.functional.softmax(pred, dim=-1)
+    if pred.dim() == 3:
+        pred = nn.functional.softmax(pred, dim=-1).argmax(dim=-1)
     mask = generate_mask(target.shape, valid_lens)
-    return ((pred.argmax(dim=-1).reshape(pred.shape[0], -1) == target) * mask ).sum().item() / (mask.sum().item())
+    return ((pred.reshape(pred.shape[0], -1) == target) * mask ).sum().item() / (mask.sum().item())
 
-def evaluate_epoch(valid_iter,net,criterion,begin_index,device):
+def evaluate_epoch(valid_iter,net,vocab,device):
     """
     :param valid_iter: valid data iter ,batch shape (batch_size, seq_len)
     :param net: model
@@ -182,18 +183,19 @@ def evaluate_epoch(valid_iter,net,criterion,begin_index,device):
     :param begin_index: seq start id
     :return: arg epoch loss and arg epoch acc
     """
-    epoch_loss = 0.0
-    epoch_acc = 0
+    net.eval()
+    epoch_acc = 0.0
     nums_batch = 0
+    epoch_bleu = 0.0
     for batch in valid_iter:
         with no_grad():
             x, x_valid_lens, y, y_valid_lens = [d.to(device) for d in batch]
-            de_x = generate_train_decoder_inputs(y, begin_index)
-            y_hat, _ = net(x, de_x)
+            y_hat = net([x, x_valid_lens, y, y_valid_lens])
             nums_batch += 1
             epoch_acc += calculate_acc(y_hat, y,y_valid_lens)
-            epoch_loss += criterion(y_hat, y, y_valid_lens).sum().item()
-    return epoch_loss / nums_batch, epoch_acc / nums_batch
+            epoch_bleu += calculate_bleu(y_hat,y,y_valid_lens,vocab)
+    net.train()
+    return epoch_acc / nums_batch , epoch_bleu / nums_batch
 
 def train(net, train_iter,valid_iter, lr, num_epoch, tar_vocab:Vocab, early_stop,device='cuda'):
     """
@@ -214,17 +216,16 @@ def train(net, train_iter,valid_iter, lr, num_epoch, tar_vocab:Vocab, early_stop
             for param in m._flat_weights_names:
                 if "weight" in param:
                     nn.init.xavier_uniform_(m._parameters[param])
-
     net.apply(xavier_init_weights)
     if torch.cuda.device_count() > 1:
         net = nn.DataParallel(net)
     net.to(device)
-    criterion = MaskedSoftmaxCELoss()
+    criterion = nn.CrossEntropyLoss(ignore_index=tar_vocab.pad_index)
     optimizer = torch.optim.Adam(net.parameters(), lr=lr)
     net.train()
-    begin_index = tar_vocab.begin_index
     animator = d2l.Animator(xlabel='epoch', ylabel='loss',
                             xlim=[10, num_epoch])
+
     early_stopping = early_stop
     for epoch in range(num_epoch):
         epoch_loss = 0.0
@@ -235,11 +236,10 @@ def train(net, train_iter,valid_iter, lr, num_epoch, tar_vocab:Vocab, early_stop
         for batch in train_iter:
             optimizer.zero_grad()
             x, x_valid_lens, y, y_valid_lens = [d.to(device) for d in batch]
-            de_x = generate_train_decoder_inputs(y, begin_index)
-            y_hat, _ = net(x, de_x)
-            loss = criterion(y_hat, y, y_valid_lens).sum()
+            y_hat = net((x, x_valid_lens, y, y_valid_lens))
+            loss = criterion(y_hat.reshape(-1,y_hat.shape[-1]), y.reshape(-1)).sum()
             loss.backward()
-            d2l.grad_clipping(net, 1)
+            torch.nn.utils.clip_grad_norm_(net.parameters(),1)
             num_tokens = y_valid_lens.sum()
             optimizer.step()
             with torch.no_grad():
@@ -250,9 +250,9 @@ def train(net, train_iter,valid_iter, lr, num_epoch, tar_vocab:Vocab, early_stop
         if (epoch + 1) % 10 == 0:
             animator.add(epoch + 1, (metric[0] / metric[1],))
         logger.info('Epoch: {}, Train Loss: {}, Train ACC: {}'.format(epoch, epoch_loss/nums_batch, epoch_acc/nums_batch))
-        valid_loss, valid_acc = evaluate_epoch(valid_iter,net,criterion,begin_index,device)
-        logger.info('Epoch: {},Valid Loss: {},Valid ACC: {}'.format(epoch, valid_loss, valid_acc))
-        if early_stopping(valid_loss,net):
+        valid_acc,valid_bleu = evaluate_epoch(valid_iter,net,tar_vocab,device)
+        logger.info('Epoch: {},Valid ACC: {},Valid Bleu {}'.format(epoch, valid_acc,valid_bleu))
+        if early_stopping(valid_acc,net): # score use -valid_loss or valid_acc
             logger.info('Early Stopping in epoch {}...'.format(epoch))
             break
 
@@ -262,18 +262,16 @@ def train(net, train_iter,valid_iter, lr, num_epoch, tar_vocab:Vocab, early_stop
 
 def pred_softmax(pred):
     """
-    :param pred: input shape (batch_size,1,vocab_size)
-    :return: shape (batch_size,1)
+    :param pred: input shape (batch_size,nums_step,vocab_size)
+    :return: shape (batch_size,nums_step)
     """
     softmax = nn.Softmax(dim=-1)
     pred = softmax(pred).argmax(dim=-1)
     return pred.reshape(pred.shape[0], -1)
 
-
-def pred(net, nums_step, data_iter, tar_vocab:Vocab,device='cuda'):
+def pred(net, data_iter, tar_vocab:Vocab,device='cuda'):
     """
     :param net: input shape(batch_size, seq_len) ---> output shape(batch_size, seq_len, vocab_size)
-    :param nums_step: seq len
     :param data_iter: test data iter ,batch shape (1, seq_len) batch_size must be 1
     :param tar_vocab: target language vocab
     :param device: device
@@ -282,31 +280,15 @@ def pred(net, nums_step, data_iter, tar_vocab:Vocab,device='cuda'):
     net.to(device)
     net.eval()
     logger.info("start test...")
-    begin_index = tar_vocab.begin_index
-    end_index = tar_vocab.end_index
     score_sum = 0.0
     num_batch = 0
     for batch in data_iter:
         with torch.no_grad():
-            x, x_valid_lens, y, y_valid_lens = [d.to(device) for d in batch]
-            enc_output = net.encoder(x)
-            state = net.decoder.init_state(enc_output)
-            net.decoder.init_context(enc_output)
-            de_x = torch.tensor([begin_index]*y.shape[0],device=device).unsqueeze(-1)
-            batch_pred = []
-            for i in range(nums_step):
-                y_hat, state = net.decoder(de_x,state)
-                y_hat = pred_softmax(y_hat)
-                if y_hat.shape[0] == 1 and y_hat.item() == end_index:
-                    break
-                batch_pred.append(y_hat)
-                de_x = y_hat
-
-
-        pred_tensor = torch.concat(batch_pred, dim=-1)
-        score = calculate_bleu(pred_tensor, y, y_valid_lens, tar_vocab)
-        score_sum += score
-        num_batch += 1
-        logger.info("batch bleu: {}".format(score))
+            x,x_valid_lens,y,y_valid_lens = [d.to(device) for d in batch]
+            pred_tensor = net([x,x_valid_lens,y,y_valid_lens])
+            score = calculate_bleu(pred_tensor, y, y_valid_lens, tar_vocab)
+            score_sum += score
+            num_batch += 1
+            logger.info("batch bleu: {}".format(score))
 
     logger.info("test arg bleu score: {}".format(score_sum/num_batch))

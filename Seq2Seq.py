@@ -64,6 +64,7 @@ class Seq2SeqEncoderDecoder(nn.Module):
         :param dec_x: decoder inputs shape (batch_size, seq_len)
         :return: decoder outputs shape (batch_size, seq_len, vocab_size)
         """
+        # TODO 接口修改
         enc_out = self.encoder(enc_x)
         state = self.decoder.init_state(enc_out)
         self.decoder.init_context(enc_out)
@@ -89,6 +90,7 @@ def main():
     # attention = Attention.DotProductAttention(dropout)
     # decoder = Attention.Seq2SeqAttentionDecoder(num_hiddens, embed_size, len(tgt_vocab), num_layers, dropout,attention)
     net = Seq2SeqEncoderDecoder(encoder, decoder)
+
     if not os.path.exists(check_point_file):
         EncoderDecoder.train(net, train_iter, valid_iter, lr, num_epochs, tgt_vocab, early_stopping, device)
     else:
