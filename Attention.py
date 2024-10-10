@@ -251,58 +251,6 @@ class TransformerDecoder(nn.Module):
         return self.linear(x)
 
 
-# class TransformerModel(nn.Module):
-#     def __init__(self,d_model,norm_shape,ffn_hidden,nums_head,nums_layer,src_vocab:Vocab,tgt_vocab:Vocab,dropout=0.1,**kwargs):
-#         super(TransformerModel,self).__init__(**kwargs)
-#         self.tgt_vocab = tgt_vocab
-#         self.encoder:TransformerEncoder = TransformerEncoder(
-#             len(src_vocab),
-#             d_model=d_model,
-#             norm_shape=norm_shape,
-#             ffn_hidden=ffn_hidden,
-#             nums_head=nums_head,
-#             nums_layer=nums_layer,
-#             dropout=dropout,
-#             **kwargs
-#         )
-#         self.decoder:TransformerDecoder = TransformerDecoder(
-#             len(tgt_vocab),
-#             d_model=d_model,
-#             norm_shape=norm_shape,
-#             ffn_hidden=ffn_hidden,
-#             nums_head=nums_head,
-#             nums_layer=nums_layer,
-#             dropout=dropout,
-#             **kwargs
-#         )
-#
-#     def forward(self,batch):
-#         """
-#         :param batch: x shape == (batch_size, max_len) ,y shape == (batch_size, max_len) ,valid_lens shape == (batch_size,)
-#         :return: train shape (batch_size, max_len, vocab_size) and pred shape (batch_size, max_len)
-#         """
-#         x,x_valid_lens,y,y_valid_lens = batch
-#         enc_mask0 = valid_lens2mask(x.shape[1],x.shape[1],x_valid_lens)
-#         enc_output = self.encoder(x,enc_mask0)
-#         if self.training:
-#             dec_input = EncoderDecoder.generate_train_decoder_inputs(y, self.tgt_vocab.begin_index)
-#             dec_mask = valid_lens2mask(y.shape[1],y.shape[1],y_valid_lens + 1,mask_after=True)
-#             """这里可以直接使用Encoder之前使用的mask是因为enc_output.shape[1]==y.shape[1]"""
-#             return self.decoder(dec_input,enc_output,enc_mask0,dec_mask)
-#         else:
-#             max_len = y.size(1)
-#             batch_size = y.size(0)
-#             """这里需要重新生成Encoder的Mask因为query_size！= key_size,此时的query_size为1，key_size依旧为max_len"""
-#             enc_mask = valid_lens2mask(1, enc_output.shape[1], x_valid_lens, mask_after=False)
-#             dec_input = torch.full((batch_size,1), self.tgt_vocab.begin_index,device=y.device)
-#             for i in range(max_len):
-#                 dec_out = EncoderDecoder.pred_softmax(
-#                     self.decoder(dec_input,enc_output,enc_mask,None)
-#                 )
-#                 next_token = dec_out[:,-1].unsqueeze(-1)
-#                 dec_input = torch.concat([dec_input,next_token],dim=-1)
-#             return dec_input[:,1:]
-
 class TransformerModel(nn.Module):
     def __init__(self,d_model,norm_shape,ffn_hidden,nums_head,nums_layer,vocab:Vocab,dropout=0.1,**kwargs):
         super(TransformerModel,self).__init__(**kwargs)
@@ -357,35 +305,6 @@ class TransformerModel(nn.Module):
                 dec_input = torch.concat([dec_input,next_token],dim=-1)
             return dec_input[:,1:]
 
-
-
-
-
-
-
-
-
-
-
-# def main():
-#     EncoderDecoder.logger.info("start")
-#     data_dir = './data/Multi30k/'
-#     num_hiddens, num_layers, dropout, batch_size, num_steps = 32, 2, 0.1, 64, 12
-#     lr, num_epochs, device = 0.005, 200, d2l.try_gpu()
-#     ffn_num_input, ffn_num_hiddens, num_heads = 32, 64, 4
-#     norm_shape = [32]
-#     patience = 10
-#     check_point_file = 'check_point/best_transformer_model.pth.tar'
-#     early_stopping = EncoderDecoder.EarlyStopping(patience=patience,delta=0.001, save_file=check_point_file)
-#     train_iter, valid_iter, test_iter, src_vocab, tgt_vocab = dataloader.load_Multi30K_data(data_dir, num_steps,batch_size)
-#     net = TransformerModel(num_hiddens,norm_shape,ffn_num_hiddens,num_heads,num_layers,src_vocab,tgt_vocab,dropout)
-#
-#     if not os.path.exists(check_point_file):
-#         EncoderDecoder.train(net, train_iter, valid_iter, lr, num_epochs, tgt_vocab, early_stopping, device)
-#     else:
-#         state_dict = torch.load(check_point_file)
-#         net.load_state_dict(state_dict)
-#     EncoderDecoder.pred(net, test_iter, tgt_vocab, device)
 
 
 

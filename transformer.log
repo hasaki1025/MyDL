@@ -1,0 +1,151 @@
+/home/lyq/anaconda3/envs/seq2seq/bin/python /home/lyq/PycharmProjects/seq2seq/main.py
+2024-10-08 16:46:40,669 - MyLogger - INFO - start
+2024-10-08 16:46:43,271 - MyLogger - INFO - Epoch: 0, Train Loss: 4.329215466188439, Train ACC: 0.2486973012861795
+/home/lyq/anaconda3/envs/seq2seq/lib/python3.11/site-packages/nltk/translate/bleu_score.py:577: UserWarning:
+The hypothesis contains 0 counts of 4-gram overlaps.
+Therefore the BLEU score evaluates to 0, independently of
+how many N-gram overlaps of lower order it contains.
+Consider using lower n-gram order or use SmoothingFunction()
+  warnings.warn(_msg)
+/home/lyq/anaconda3/envs/seq2seq/lib/python3.11/site-packages/nltk/translate/bleu_score.py:577: UserWarning:
+The hypothesis contains 0 counts of 3-gram overlaps.
+Therefore the BLEU score evaluates to 0, independently of
+how many N-gram overlaps of lower order it contains.
+Consider using lower n-gram order or use SmoothingFunction()
+  warnings.warn(_msg)
+/home/lyq/anaconda3/envs/seq2seq/lib/python3.11/site-packages/nltk/translate/bleu_score.py:577: UserWarning:
+The hypothesis contains 0 counts of 2-gram overlaps.
+Therefore the BLEU score evaluates to 0, independently of
+how many N-gram overlaps of lower order it contains.
+Consider using lower n-gram order or use SmoothingFunction()
+  warnings.warn(_msg)
+2024-10-08 16:46:43,454 - MyLogger - INFO - Epoch: 0,Valid ACC: 0.24721576925373864,Valid Bleu 0.2722774621212121
+2024-10-08 16:46:43,454 - MyLogger - INFO - Get better model ,score 0.24721576925373864, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:46:45,620 - MyLogger - INFO - Epoch: 1, Train Loss: 3.2983055188267243, Train ACC: 0.36025004628902
+2024-10-08 16:46:45,797 - MyLogger - INFO - Epoch: 1,Valid ACC: 0.2667317526223386,Valid Bleu 0.28915275804924245
+2024-10-08 16:46:45,797 - MyLogger - INFO - Get better model ,score 0.2667317526223386, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:46:47,894 - MyLogger - INFO - Epoch: 2, Train Loss: 2.9876451896675884, Train ACC: 0.3947164013880253
+2024-10-08 16:46:48,071 - MyLogger - INFO - Epoch: 2,Valid ACC: 0.29564585191688575,Valid Bleu 0.32489642518939393
+2024-10-08 16:46:48,071 - MyLogger - INFO - Get better model ,score 0.29564585191688575, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:46:50,163 - MyLogger - INFO - Epoch: 3, Train Loss: 2.7855792250402174, Train ACC: 0.42482913928534943
+2024-10-08 16:46:50,339 - MyLogger - INFO - Epoch: 3,Valid ACC: 0.309849387235694,Valid Bleu 0.354730409564394
+2024-10-08 16:46:50,339 - MyLogger - INFO - Get better model ,score 0.309849387235694, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:46:52,496 - MyLogger - INFO - Epoch: 4, Train Loss: 2.610408276188216, Train ACC: 0.45372529606017925
+2024-10-08 16:46:52,674 - MyLogger - INFO - Epoch: 4,Valid ACC: 0.3337091647316936,Valid Bleu 0.3835774739583333
+2024-10-08 16:46:52,674 - MyLogger - INFO - Get better model ,score 0.3337091647316936, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:46:54,826 - MyLogger - INFO - Epoch: 5, Train Loss: 2.4511636054463324, Train ACC: 0.48099345763043105
+2024-10-08 16:46:55,004 - MyLogger - INFO - Epoch: 5,Valid ACC: 0.36733436460983027,Valid Bleu 0.4063165838068181
+2024-10-08 16:46:55,004 - MyLogger - INFO - Get better model ,score 0.36733436460983027, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:46:57,180 - MyLogger - INFO - Epoch: 6, Train Loss: 2.3200545158680317, Train ACC: 0.5018043437389028
+2024-10-08 16:46:57,358 - MyLogger - INFO - Epoch: 6,Valid ACC: 0.3746228298918538,Valid Bleu 0.41646839488636367
+2024-10-08 16:46:57,358 - MyLogger - INFO - Get better model ,score 0.3746228298918538, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:46:59,538 - MyLogger - INFO - Epoch: 7, Train Loss: 2.222107320630078, Train ACC: 0.5152446710701862
+2024-10-08 16:46:59,717 - MyLogger - INFO - Epoch: 7,Valid ACC: 0.3962099777538152,Valid Bleu 0.43261126893939394
+2024-10-08 16:46:59,717 - MyLogger - INFO - Get better model ,score 0.3962099777538152, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:01,920 - MyLogger - INFO - Epoch: 8, Train Loss: 2.1425351920632014, Train ACC: 0.5272715308187318
+2024-10-08 16:47:02,099 - MyLogger - INFO - Epoch: 8,Valid ACC: 0.3966568696203421,Valid Bleu 0.43896484375
+2024-10-08 16:47:04,318 - MyLogger - INFO - Epoch: 9, Train Loss: 2.0837477763318804, Train ACC: 0.5354913058810657
+<Figure size 350x250 with 1 Axes>
+2024-10-08 16:47:04,499 - MyLogger - INFO - Epoch: 9,Valid ACC: 0.39644457056606885,Valid Bleu 0.44312263257575757
+2024-10-08 16:47:06,720 - MyLogger - INFO - Epoch: 10, Train Loss: 2.0264416765011353, Train ACC: 0.5444334167271584
+2024-10-08 16:47:06,900 - MyLogger - INFO - Epoch: 10,Valid ACC: 0.40086281666075846,Valid Bleu 0.43753551136363633
+2024-10-08 16:47:06,900 - MyLogger - INFO - Get better model ,score 0.40086281666075846, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:09,101 - MyLogger - INFO - Epoch: 11, Train Loss: 1.9844136631961435, Train ACC: 0.5511761054490923
+2024-10-08 16:47:09,278 - MyLogger - INFO - Epoch: 11,Valid ACC: 0.41435292087912556,Valid Bleu 0.44902343750000007
+2024-10-08 16:47:09,278 - MyLogger - INFO - Get better model ,score 0.41435292087912556, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:11,489 - MyLogger - INFO - Epoch: 12, Train Loss: 1.948718359291816, Train ACC: 0.5569155902328192
+2024-10-08 16:47:11,678 - MyLogger - INFO - Epoch: 12,Valid ACC: 0.41819295273037954,Valid Bleu 0.45450106534090906
+2024-10-08 16:47:11,678 - MyLogger - INFO - Get better model ,score 0.41819295273037954, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:13,926 - MyLogger - INFO - Epoch: 13, Train Loss: 1.9158068412200995, Train ACC: 0.5623116054861654
+2024-10-08 16:47:14,106 - MyLogger - INFO - Epoch: 13,Valid ACC: 0.4231564514956888,Valid Bleu 0.4561049952651515
+2024-10-08 16:47:14,106 - MyLogger - INFO - Get better model ,score 0.4231564514956888, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:16,330 - MyLogger - INFO - Epoch: 14, Train Loss: 1.886543861044661, Train ACC: 0.5661342969859814
+2024-10-08 16:47:16,507 - MyLogger - INFO - Epoch: 14,Valid ACC: 0.4239126827631269,Valid Bleu 0.4536902225378787
+2024-10-08 16:47:18,753 - MyLogger - INFO - Epoch: 15, Train Loss: 1.8598498767693137, Train ACC: 0.5707491187228833
+2024-10-08 16:47:18,939 - MyLogger - INFO - Epoch: 15,Valid ACC: 0.4286545173553224,Valid Bleu 0.4549419981060605
+2024-10-08 16:47:18,939 - MyLogger - INFO - Get better model ,score 0.4286545173553224, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:21,163 - MyLogger - INFO - Epoch: 16, Train Loss: 1.8400738236662575, Train ACC: 0.5734653546661501
+2024-10-08 16:47:21,350 - MyLogger - INFO - Epoch: 16,Valid ACC: 0.4247812607841126,Valid Bleu 0.46050544507575764
+2024-10-08 16:47:23,533 - MyLogger - INFO - Epoch: 17, Train Loss: 1.8161449771095477, Train ACC: 0.5785521196229294
+2024-10-08 16:47:23,715 - MyLogger - INFO - Epoch: 17,Valid ACC: 0.4268929344780173,Valid Bleu 0.4545025449810606
+2024-10-08 16:47:25,850 - MyLogger - INFO - Epoch: 18, Train Loss: 1.7974585024270717, Train ACC: 0.5799393998712917
+2024-10-08 16:47:26,027 - MyLogger - INFO - Epoch: 18,Valid ACC: 0.4274233275307916,Valid Bleu 0.4614997632575757
+2024-10-08 16:47:28,163 - MyLogger - INFO - Epoch: 19, Train Loss: 1.7791383271700485, Train ACC: 0.5835225735966684
+<Figure size 350x250 with 1 Axes>
+2024-10-08 16:47:28,341 - MyLogger - INFO - Epoch: 19,Valid ACC: 0.4399662451318833,Valid Bleu 0.4739642518939393
+2024-10-08 16:47:28,341 - MyLogger - INFO - Get better model ,score 0.4399662451318833, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:30,475 - MyLogger - INFO - Epoch: 20, Train Loss: 1.7615125328958823, Train ACC: 0.5875502472439235
+2024-10-08 16:47:30,652 - MyLogger - INFO - Epoch: 20,Valid ACC: 0.4451309990159647,Valid Bleu 0.47811760179924245
+2024-10-08 16:47:30,652 - MyLogger - INFO - Get better model ,score 0.4451309990159647, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:32,819 - MyLogger - INFO - Epoch: 21, Train Loss: 1.7502593164401958, Train ACC: 0.5889359000392206
+2024-10-08 16:47:32,999 - MyLogger - INFO - Epoch: 21,Valid ACC: 0.4372867902243809,Valid Bleu 0.4593528053977274
+2024-10-08 16:47:35,557 - MyLogger - INFO - Epoch: 22, Train Loss: 1.736812986466328, Train ACC: 0.5911342749803257
+2024-10-08 16:47:35,738 - MyLogger - INFO - Epoch: 22,Valid ACC: 0.4455494818978929,Valid Bleu 0.47047526041666665
+2024-10-08 16:47:38,011 - MyLogger - INFO - Epoch: 23, Train Loss: 1.7239830115818242, Train ACC: 0.5934962599819513
+2024-10-08 16:47:38,190 - MyLogger - INFO - Epoch: 23,Valid ACC: 0.43456489965089434,Valid Bleu 0.4631998697916667
+2024-10-08 16:47:40,390 - MyLogger - INFO - Epoch: 24, Train Loss: 1.7117939515260874, Train ACC: 0.5966097790955648
+2024-10-08 16:47:40,573 - MyLogger - INFO - Epoch: 24,Valid ACC: 0.443619596931876,Valid Bleu 0.4775864109848485
+2024-10-08 16:47:42,803 - MyLogger - INFO - Epoch: 25, Train Loss: 1.7013329007552058, Train ACC: 0.5989749502202477
+2024-10-08 16:47:43,002 - MyLogger - INFO - Epoch: 25,Valid ACC: 0.44488744408102376,Valid Bleu 0.4793930516098484
+2024-10-08 16:47:45,429 - MyLogger - INFO - Epoch: 26, Train Loss: 1.6918612936519841, Train ACC: 0.6000537537051853
+2024-10-08 16:47:45,618 - MyLogger - INFO - Epoch: 26,Valid ACC: 0.4468475308585238,Valid Bleu 0.47219904119318173
+2024-10-08 16:47:45,618 - MyLogger - INFO - Get better model ,score 0.4468475308585238, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:47,859 - MyLogger - INFO - Epoch: 27, Train Loss: 1.684082060658459, Train ACC: 0.6015542625639215
+2024-10-08 16:47:48,042 - MyLogger - INFO - Epoch: 27,Valid ACC: 0.44356590277180336,Valid Bleu 0.47091175426136367
+2024-10-08 16:47:50,263 - MyLogger - INFO - Epoch: 28, Train Loss: 1.6720172363755987, Train ACC: 0.6035647573353213
+2024-10-08 16:47:50,446 - MyLogger - INFO - Epoch: 28,Valid ACC: 0.45329894989851277,Valid Bleu 0.48444602272727266
+2024-10-08 16:47:50,446 - MyLogger - INFO - Get better model ,score 0.45329894989851277, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:52,770 - MyLogger - INFO - Epoch: 29, Train Loss: 1.6618052327160269, Train ACC: 0.6046274092309852
+<Figure size 350x250 with 1 Axes>
+2024-10-08 16:47:52,956 - MyLogger - INFO - Epoch: 29,Valid ACC: 0.43993714678860885,Valid Bleu 0.4736298532196969
+2024-10-08 16:47:55,190 - MyLogger - INFO - Epoch: 30, Train Loss: 1.6602846998475196, Train ACC: 0.6051094727836511
+2024-10-08 16:47:55,368 - MyLogger - INFO - Epoch: 30,Valid ACC: 0.45777784529894605,Valid Bleu 0.47558001893939394
+2024-10-08 16:47:55,368 - MyLogger - INFO - Get better model ,score 0.45777784529894605, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:47:57,618 - MyLogger - INFO - Epoch: 31, Train Loss: 1.6476659478069928, Train ACC: 0.6066715427516279
+2024-10-08 16:47:57,799 - MyLogger - INFO - Epoch: 31,Valid ACC: 0.45427324393083807,Valid Bleu 0.48124852035984844
+2024-10-08 16:48:00,042 - MyLogger - INFO - Epoch: 32, Train Loss: 1.642821178824891, Train ACC: 0.6081181958778297
+2024-10-08 16:48:00,223 - MyLogger - INFO - Epoch: 32,Valid ACC: 0.4584976482835193,Valid Bleu 0.4842151988636363
+2024-10-08 16:48:02,482 - MyLogger - INFO - Epoch: 33, Train Loss: 1.6351918504626741, Train ACC: 0.6090766023353901
+2024-10-08 16:48:02,660 - MyLogger - INFO - Epoch: 33,Valid ACC: 0.46617101601632294,Valid Bleu 0.4898689038825758
+2024-10-08 16:48:02,660 - MyLogger - INFO - Get better model ,score 0.46617101601632294, save model to check_point/best_transformer_model2.pth.tar
+2024-10-08 16:48:04,980 - MyLogger - INFO - Epoch: 34, Train Loss: 1.630688378989434, Train ACC: 0.6095109729164386
+2024-10-08 16:48:05,160 - MyLogger - INFO - Epoch: 34,Valid ACC: 0.4488511999864851,Valid Bleu 0.4741418087121212
+2024-10-08 16:48:07,470 - MyLogger - INFO - Epoch: 35, Train Loss: 1.6247400410374881, Train ACC: 0.6101496778991242
+2024-10-08 16:48:07,652 - MyLogger - INFO - Epoch: 35,Valid ACC: 0.4478153128546678,Valid Bleu 0.47472626657196965
+2024-10-08 16:48:09,902 - MyLogger - INFO - Epoch: 36, Train Loss: 1.6178569885602607, Train ACC: 0.6125727431730151
+2024-10-08 16:48:10,085 - MyLogger - INFO - Epoch: 36,Valid ACC: 0.45342757533543654,Valid Bleu 0.47952769886363633
+2024-10-08 16:48:12,367 - MyLogger - INFO - Epoch: 37, Train Loss: 1.6103006966313602, Train ACC: 0.614085132945249
+2024-10-08 16:48:12,553 - MyLogger - INFO - Epoch: 37,Valid ACC: 0.4421871563155455,Valid Bleu 0.4760520241477273
+2024-10-08 16:48:14,843 - MyLogger - INFO - Epoch: 38, Train Loss: 1.6085703926989685, Train ACC: 0.6132779333863073
+2024-10-08 16:48:15,030 - MyLogger - INFO - Epoch: 38,Valid ACC: 0.4490634731936267,Valid Bleu 0.47354255445075755
+2024-10-08 16:48:17,383 - MyLogger - INFO - Epoch: 39, Train Loss: 1.6027859861630176, Train ACC: 0.6146956725721516
+<Figure size 350x250 with 1 Axes>
+2024-10-08 16:48:17,574 - MyLogger - INFO - Epoch: 39,Valid ACC: 0.44783702885273124,Valid Bleu 0.4807987097537879
+2024-10-08 16:48:19,920 - MyLogger - INFO - Epoch: 40, Train Loss: 1.5994695165083797, Train ACC: 0.6152601896165734
+2024-10-08 16:48:20,106 - MyLogger - INFO - Epoch: 40,Valid ACC: 0.4659965715424546,Valid Bleu 0.48992513020833334
+2024-10-08 16:48:22,367 - MyLogger - INFO - Epoch: 41, Train Loss: 1.5950248745569573, Train ACC: 0.6156470333832993
+2024-10-08 16:48:22,545 - MyLogger - INFO - Epoch: 41,Valid ACC: 0.454925677164926,Valid Bleu 0.47377633759469695
+2024-10-08 16:48:24,760 - MyLogger - INFO - Epoch: 42, Train Loss: 1.587730153016582, Train ACC: 0.6171037898213054
+2024-10-08 16:48:24,945 - MyLogger - INFO - Epoch: 42,Valid ACC: 0.44891486117406826,Valid Bleu 0.47506658380681815
+2024-10-08 16:48:27,286 - MyLogger - INFO - Epoch: 43, Train Loss: 1.5858093250690577, Train ACC: 0.616631775679419
+loss 0.002, 121030.6 tokens/sec on cuda:0
+2024-10-08 16:48:27,480 - MyLogger - INFO - Epoch: 43,Valid ACC: 0.4539079183505935,Valid Bleu 0.48278290719696965
+2024-10-08 16:48:27,481 - MyLogger - INFO - Early Stopping in epoch 43...
+2024-10-08 16:48:27,481 - MyLogger - INFO - start test...
+2024-10-08 16:48:27,493 - MyLogger - INFO - batch bleu: 0.4544270833333332
+2024-10-08 16:48:27,512 - MyLogger - INFO - batch bleu: 0.48828125
+2024-10-08 16:48:27,527 - MyLogger - INFO - batch bleu: 0.47395833333333315
+2024-10-08 16:48:27,540 - MyLogger - INFO - batch bleu: 0.49869791666666663
+2024-10-08 16:48:27,552 - MyLogger - INFO - batch bleu: 0.5
+2024-10-08 16:48:27,564 - MyLogger - INFO - batch bleu: 0.46484375
+2024-10-08 16:48:27,576 - MyLogger - INFO - batch bleu: 0.47526041666666663
+2024-10-08 16:48:27,588 - MyLogger - INFO - batch bleu: 0.4492187500000001
+2024-10-08 16:48:27,600 - MyLogger - INFO - batch bleu: 0.43098958333333337
+2024-10-08 16:48:27,612 - MyLogger - INFO - batch bleu: 0.4661458333333333
+2024-10-08 16:48:27,624 - MyLogger - INFO - batch bleu: 0.4791666666666667
+2024-10-08 16:48:27,636 - MyLogger - INFO - batch bleu: 0.47526041666666663
+2024-10-08 16:48:27,648 - MyLogger - INFO - batch bleu: 0.4778645833333334
+2024-10-08 16:48:27,660 - MyLogger - INFO - batch bleu: 0.45572916666666663
+2024-10-08 16:48:27,672 - MyLogger - INFO - batch bleu: 0.48567708333333326
+2024-10-08 16:48:27,683 - MyLogger - INFO - batch bleu: 0.4645833333333333
+2024-10-08 16:48:27,683 - MyLogger - INFO - test arg bleu score: 0.47125651041666666
